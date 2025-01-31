@@ -1,0 +1,64 @@
+Classes Needed:
+Journal Class -> will include the ability to save and load. Will act as a main menu for the program
+Entry Class -> will filter in prompts, a date, and the responses from the user.
+
+
+Class: Journal
+Fields:
+_entries → List of Entry objects
+_prompts → List of predefined prompts
+_savedJournals → Set of saved journal filenames
+
+Methods:
+WriteEntry() → Creates a new journal entry
+DisplayJournal() → Shows all saved entries
+SaveToFile(filename) → Saves journal entries to a file
+LoadFromFile(filename) → Loads journal entries from a file
+ListSavedJournals() → Displays available saved journals
+RefreshSavedJournals() → Updates the list of saved journals
+
+
+Class: Entry
+Fields:
+_Prompt → The journal prompt
+_Response → User’s response
+_Date → Date of the entry
+
+Breaking down the classes and their uses:
+
++------------------+
+|     Program      |
++------------------+
+| - Journal _journal |
++------------------+
+| + Main(args)     |
++------------------+
+
+        ⬇ uses
+
++------------------+
+|     Journal      |
++------------------+
+| - List<Entry> _entries  |
+| - List<string> _prompts |
+| - HashSet<string> _savedJournals |
++------------------+
+| + WriteEntry()   |
+| + DisplayJournal() |
+| + SaveToFile(filename) |
+| + LoadFromFile(filename) |
+| + ListSavedJournals() |
+| + RefreshSavedJournals() |
++------------------+
+
+        ⬇ contains
+
++------------------+
+|      Entry       |
++------------------+
+| - string _Prompt |
+| - string _Response |
+| - string _Date |
++------------------+
+| + Entry(prompt, response, date) |
++------------------+

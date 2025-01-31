@@ -9,7 +9,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Journal journal = new Journal();
+        Journal _journal = new Journal();
         
         while (true)
         {
@@ -21,28 +21,28 @@ class Program
             Console.WriteLine("5. Exit");
             Console.Write("Choose an option: ");
 
-            string choice = Console.ReadLine();
+            string _choice = Console.ReadLine();
 
-            switch (choice)
+            switch (_choice)
             {
                 case "1":
-                    journal.WriteEntry();
+                    _journal.WriteEntry();
                     break;
                 case "2":
-                    journal.DisplayJournal();
+                    _journal.DisplayJournal();
                     break;
                 case "3":
                     Console.Write("Enter filename to save to: ");
-                    string saveFilename = Console.ReadLine();
-                    journal.SaveToFile(saveFilename);
-                    journal.RefreshSavedJournals();
+                    string _saveFilename = Console.ReadLine();
+                    _journal.SaveToFile(_saveFilename);
+                    _journal.RefreshSavedJournals();
                     break;
                 case "4":
-                    if (journal.ListSavedJournals())
+                    if (_journal.ListSavedJournals())
                     {
                         Console.Write("Enter filename to load from: ");
-                        string loadFilename = Console.ReadLine();
-                        journal.LoadFromFile(loadFilename);
+                        string _loadFilename = Console.ReadLine();
+                        _journal.LoadFromFile(_loadFilename);
                     }
                     break;
                 case "5":
@@ -58,8 +58,8 @@ class Program
 
 class Journal
 {
-    private List<Entry> entries = new List<Entry>();
-    private List<string> prompts = new List<string>
+    private List<Entry> _entries = new List<Entry>();
+    private List<string> _prompts = new List<string>
     {
         "Who was the most interesting person I interacted with today?",
         "What was the best part of my day?",
@@ -68,53 +68,53 @@ class Journal
         "If I had one thing I could do over today, what would it be?"
     };
 
-    private HashSet<string> savedJournals = new HashSet<string>();
+    private HashSet<string> _savedJournals = new HashSet<string>();
 
     public void WriteEntry()
     {
         Random random = new Random();
-        string prompt = prompts[random.Next(prompts.Count)];
+        string _prompt = _prompts[random.Next(_prompts.Count)];
 
-        Console.WriteLine($"\nPrompt: {prompt}");
+        Console.WriteLine($"\nPrompt: {_prompt}");
         Console.Write("Your response: ");
-        string response = Console.ReadLine();
+        string _response = Console.ReadLine();
 
-        Entry newEntry = new Entry(prompt, response, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-        entries.Add(newEntry);
+        Entry _newEntry = new Entry(_prompt, _response, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+        _entries.Add(_newEntry);
         Console.WriteLine("Entry saved.");
     }
 
     public void DisplayJournal()
     {
-        if (entries.Count == 0)
+        if (_entries.Count == 0)
         {
             Console.WriteLine("\nThe journal is empty.");
             return;
         }
 
         Console.WriteLine("\nJournal Entries:");
-        foreach (Entry entry in entries)
+        foreach (Entry _entry in _entries)
         {
-            Console.WriteLine($"\nDate: {entry.Date}");
-            Console.WriteLine($"Prompt: {entry.Prompt}");
-            Console.WriteLine($"Response: {entry.Response}");
+            Console.WriteLine($"\nDate: {_entry._Date}");
+            Console.WriteLine($"Prompt: {_entry._Prompt}");
+            Console.WriteLine($"Response: {_entry._Response}");
         }
     }
 
-    public void SaveToFile(string filename)
+    public void SaveToFile(string _filename)
     {
         try
         {
-            string fullfilename = filename + ".txt";
-            using (StreamWriter writer = new StreamWriter(fullfilename))
+            string _fullfilename = _filename + ".txt";
+            using (StreamWriter _writer = new StreamWriter(_fullfilename))
             {
-                foreach (Entry entry in entries)
+                foreach (Entry _entry in _entries)
                 {
-                    writer.WriteLine($"{entry.Date}|{entry.Prompt}|{entry.Response}");
+                    _writer.WriteLine($"{_entry._Date}|{_entry._Prompt}|{_entry._Response}");
                 }
             }
             Console.WriteLine("Journal saved successfully.");
-            savedJournals.Add(filename);
+            _savedJournals.Add(_filename);
         }
         catch (Exception ex)
         {
@@ -122,24 +122,24 @@ class Journal
         }
     }
 
-    public void LoadFromFile(string filename)
+    public void LoadFromFile(string _filename)
     {
         try
         {
-            if (!File.Exists(filename))
+            if (!File.Exists(_filename))
             {
                 Console.WriteLine("File not found.");
                 return;
             }
 
-            entries.Clear();
-            string[] lines = File.ReadAllLines(filename);
-            foreach (string line in lines)
+            _entries.Clear();
+            string[] _lines = File.ReadAllLines(_filename);
+            foreach (string _line in _lines)
             {
-                string[] parts = line.Split('|');
-                if (parts.Length == 3)
+                string[] _parts = _line.Split('|');
+                if (_parts.Length == 3)
                 {
-                    entries.Add(new Entry(parts[1], parts[2], parts[0]));
+                    _entries.Add(new Entry(_parts[1], _parts[2], _parts[0]));
                 }
             }
 
@@ -155,15 +155,15 @@ class Journal
     {
         Console.WriteLine("\nSaved Journals:");
         RefreshSavedJournals();
-        if (savedJournals.Count == 0)
+        if (_savedJournals.Count == 0)
         {
             Console.WriteLine("No saved journals found.");
             return false;
         }
 
-        foreach (string journal in savedJournals)
+        foreach (string _journal in _savedJournals)
         {
-            Console.WriteLine(journal);
+            Console.WriteLine(_journal);
         }
         return true;
     }
@@ -172,11 +172,11 @@ class Journal
     {
         try
         {
-            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.txt");
-            savedJournals.Clear();
-            foreach (string file in files)
+            string[] _files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.txt");
+            _savedJournals.Clear();
+            foreach (string _file in _files)
             {
-                savedJournals.Add(Path.GetFileName(file));
+                _savedJournals.Add(Path.GetFileName(_file));
             }
         }
         catch (Exception ex)
@@ -188,14 +188,14 @@ class Journal
 
 class Entry
 {
-    public string Prompt { get; }
-    public string Response { get; }
-    public string Date { get; }
+    public string _Prompt { get; }
+    public string _Response { get; }
+    public string _Date { get; }
 
-    public Entry(string prompt, string response, string date)
+    public Entry(string _prompt, string _response, string _date)
     {
-        Prompt = prompt;
-        Response = response;
-        Date = date;
+        _Prompt = _prompt;
+        _Response = _response;
+        _Date = _date;
     }
 }
