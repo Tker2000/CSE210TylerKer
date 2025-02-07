@@ -1,5 +1,7 @@
 Classes Needed:
-Program-> runs the scripture
+Program-> 
+The Program class acts as the entry point of the application, managing user interaction and the main execution loop.
+
 
 Scripture Class ->
 Stores a reference and a list of words from the scripture text.
