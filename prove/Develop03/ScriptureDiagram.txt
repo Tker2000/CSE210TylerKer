@@ -1,0 +1,121 @@
+Classes Needed:
+Program-> runs the scripture
+
+Scripture Class ->
+Stores a reference and a list of words from the scripture text.
+Displays the scripture, replacing hidden words with underscores (____).
+Hides a specified number of random words that are still visible.
+Checks if all words are hidden to determine when the program should end.
+
+
+Reference Class -> 
+Stores and provides the scripture reference (e.g., "John 3:16").
+
+
+Word Class ->
+Stores a single word from the scripture.
+Tracks whether the word is hidden or visible.
+Provides a method to hide the word.
+
+---------------------------------------------------------------------------------------------------
+Class: Program
+Fields:
+Scripture → Stores an instance of the Scripture class, representing the scripture being memorized.
+
+Methods:
+Main() → The entry point of the program. It:
+    Initializes a Scripture object with a reference and text.
+    Enters a loop that:
+    Clears the console.
+    Displays the current state of the scripture.
+    Prompts the user for input.
+    Exits if the user types "quit".
+    Hides a few random words if the user presses Enter.
+    Ends when all words are hidden.
+
+---------------------------------------------------------------------------------------------------
+Class: Scripture
+Fields:
+Reference → Stores the reference object (an instance of the Reference class).
+Words → A list of Word objects representing the words in the scripture.
+Random → Used to randomly select words for hiding.
+
+Methods:
+Scripture(string referenceText, string text) → Constructor that initializes the reference and breaks the scripture text into words.
+Display() → Prints the scripture reference followed by the words. Hidden words appear as underscores (____).
+HideRandomWords(int count) → Selects a given number of visible words and hides them.
+AllWordsHidden() → Checks if all words are hidden, returning true when the scripture is completely obscured.
+
+
+---------------------------------------------------------------------------------------------------
+Class: Reference
+Fields:
+Text → Stores the reference of the scripture (e.g., "John 3:16").
+
+Methods:
+Reference(string text) → Constructor that initializes the reference with the given text.
+Text (Property) → Provides access to the stored reference text.
+
+---------------------------------------------------------------------------------------------------
+Class: Word
+Fields:
+Text → Stores the actual word from the scripture.
+Hidden → A boolean flag that tracks whether the word is visible or hidden.
+Methods:
+Word(string text) → Constructor that initializes the word and sets it as visible.
+Hide() → Marks the word as hidden.
+Hidden (Property) → Allows checking whether the word is hidden.
+
+
+
+
+
+
+Breaking down the classes and their uses:
+
++------------------+
+|     Program      |
++------------------+
+| - Scripture _scripture |
++------------------+
+| + Main(args)     |
++------------------+
+
+Contains ⬇
+
++------------------+
+|     Scripture    |
++------------------+
+| - Reference _reference |
+| - List<Word> _words |
+| - Random _random |
++------------------+
+| + Scripture(referenceText, text) |
+| + Display() |
+| + HideRandomWords(count) |
+| + AllWordsHidden() |
++------------------+
+
+Contains ⬇
+
++------------------+
+|     Reference    |
++------------------+
+| - string _text |
++------------------+
+| + Reference(text) |
+| + Text (getter) |
++------------------+
+
+Contains ⬇
+
++------------------+
+|      Word        |
++------------------+
+| - string _text |
+| - bool _hidden |
++------------------+
+| + Word(text) |
+| + Hide() |
+| + Hidden (getter) |
++------------------+
