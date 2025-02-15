@@ -1,201 +1,157 @@
-// Stretch: I added a feature that will tell you what journals have already been saved so that you know which ones you can load in when you're ready
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        Journal _journal = new Journal();
+        string _filename = "scriptures.txt";
+        List<_scripture> scriptures = Load_scripturesFromFile(_filename);
+        
+        if (scriptures.Count == 0)
+        {
+            Console.WriteLine("No scriptures found in the file. You must add a scripture or quit.");
+            while (true)
+            {
+                Console.WriteLine("Would you like to add a scripture? (yes/no)");
+                string _choice = Console.ReadLine().ToLower();
+                if (_choice == "no") return;
+                if (_choice == "yes")
+                {
+                    Add_scriptureToFile(_filename);
+                    scriptures = Load_scripturesFromFile(_filename);
+                    break;
+                }
+            }
+        }
         
         while (true)
         {
-            Console.WriteLine("\nJournal Menu:");
-            Console.WriteLine("1. Write a new entry");
-            Console.WriteLine("2. Display the journal");
-            Console.WriteLine("3. Save the journal to a file");
-            Console.WriteLine("4. Load the journal from a file");
-            Console.WriteLine("5. Exit");
-            Console.Write("Choose an option: ");
-
-            string _choice = Console.ReadLine();
-
-            switch (_choice)
+            Random rand = new Random();
+            _scripture scripture = scriptures[rand.Next(scriptures.Count)];
+            
+            while (!scripture.AllWordsHidden())
             {
-                case "1":
-                    _journal.WriteEntry();
-                    break;
-                case "2":
-                    _journal.DisplayJournal();
-                    break;
-                case "3":
-                    Console.Write("Enter filename to save to: ");
-                    string _saveFilename = Console.ReadLine();
-                    _journal.SaveToFile(_saveFilename);
-                    _journal.RefreshSavedJournals();
-                    break;
-                case "4":
-                    if (_journal.ListSavedJournals())
-                    {
-                        Console.Write("Enter filename to load from: ");
-                        string _loadFilename = Console.ReadLine();
-                        _journal.LoadFromFile(_loadFilename);
-                    }
-                    break;
-                case "5":
-                    Console.WriteLine("Goodbye!");
+                Console.Clear();
+                scripture.Display();
+                Console.WriteLine("\nPress Enter to hide words, type 'add' to add a scripture, or type 'quit' to exit.");
+                string _input = Console.ReadLine().ToLower();
+                if (_input == "quit")
                     return;
-                default:
-                    Console.WriteLine("Invalid choice. Please try again.");
-                    break;
+                if (_input == "add")
+                {
+                    Add_scriptureToFile(_filename);
+                    scriptures = Load_scripturesFromFile(_filename);
+                    continue;
+                }
+                
+                scripture.HideRandomWords(3);
             }
+            
+            Console.WriteLine("\nThe scripture is fully hidden. Would you like to try again with the same scripture or a new one? (same/new/quit)");
+            string _choice = Console.ReadLine().ToLower();
+            if (_choice == "quit") return;
+        }
+    }
+
+    static List<_scripture> Load_scripturesFromFile(string _filename)
+    {
+        List<_scripture> scriptures = new List<_scripture>();
+        if (File.Exists(_filename))
+        {
+            string[] lines = File.ReadAllLines(_filename);
+            for (int i = 0; i < lines.Length; i += 2)
+            {
+                if (i + 1 < lines.Length)
+                {
+                    scriptures.Add(new _scripture(lines[i], lines[i + 1]));
+                }
+            }
+        }
+        return scriptures;
+    }
+
+    static void Add_scriptureToFile(string _filename)
+    {
+        Console.WriteLine("Enter the scripture _reference:");
+        string _reference = Console.ReadLine();
+        Console.WriteLine("Enter the scripture _text:");
+        string _text = Console.ReadLine();
+        
+        using (StreamWriter sw = File.AppendText(_filename))
+        {
+            sw.WriteLine(_reference);
+            sw.WriteLine(_text);
         }
     }
 }
 
-class Journal
+class _scripture
 {
-    private List<Entry> _entries = new List<Entry>();
-    private List<string> _prompts = new List<string>
+    private Reference _reference;
+    private List<Word> words;
+    
+    public _scripture(string _referenceText, string _text)
     {
-        "Who was the most interesting person I interacted with today?",
-        "What was the best part of my day?",
-        "How did I see the hand of the Lord in my life today?",
-        "What was the strongest emotion I felt today?",
-        "If I had one thing I could do over today, what would it be?"
-    };
-
-    private HashSet<string> _savedJournals = new HashSet<string>();
-
-    public void WriteEntry()
-    {
-        Random random = new Random();
-        string _prompt = _prompts[random.Next(_prompts.Count)];
-
-        Console.WriteLine($"\nPrompt: {_prompt}");
-        Console.Write("Your response: ");
-        string _response = Console.ReadLine();
-
-        Entry _newEntry = new Entry(_prompt, _response, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-        _entries.Add(_newEntry);
-        Console.WriteLine("Entry saved.");
+        _reference = new Reference(_referenceText);
+        words = _text.Split(' ').Select(w => new Word(w)).ToList();
     }
-
-    public void DisplayJournal()
+    
+    public void Display()
     {
-        if (_entries.Count == 0)
+        Console.Write(_reference.Text + " - ");
+        foreach (var word in words)
         {
-            Console.WriteLine("\nThe journal is empty.");
-            return;
-        }
-
-        Console.WriteLine("\nJournal Entries:");
-        foreach (Entry _entry in _entries)
-        {
-            Console.WriteLine($"\nDate: {_entry._Date}");
-            Console.WriteLine($"Prompt: {_entry._Prompt}");
-            Console.WriteLine($"Response: {_entry._Response}");
+            Console.Write(word.Hidden ? "____ " : word.Text + " ");
         }
     }
-
-    public void SaveToFile(string _filename)
+    
+    public void HideRandomWords(int count)
     {
-        try
+        Random rand = new Random();
+        var visibleWords = words.Where(w => !w.Hidden).ToList();
+        if (visibleWords.Count == 0) return;
+
+        for (int i = 0; i < count; i++)
         {
-            string _fullfilename = _filename + ".txt";
-            using (StreamWriter _writer = new StreamWriter(_fullfilename))
-            {
-                foreach (Entry _entry in _entries)
-                {
-                    _writer.WriteLine($"{_entry._Date}|{_entry._Prompt}|{_entry._Response}");
-                }
-            }
-            Console.WriteLine("Journal saved successfully.");
-            _savedJournals.Add(_filename);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while saving: {ex.Message}");
+            if (visibleWords.Count == 0) break;
+            var wordToHide = visibleWords[rand.Next(visibleWords.Count)];
+            wordToHide.Hide();
+            visibleWords.Remove(wordToHide);
         }
     }
-
-    public void LoadFromFile(string _filename)
+    
+    public bool AllWordsHidden()
     {
-        try
-        {
-            if (!File.Exists(_filename))
-            {
-                Console.WriteLine("File not found.");
-                return;
-            }
-
-            _entries.Clear();
-            string[] _lines = File.ReadAllLines(_filename);
-            foreach (string _line in _lines)
-            {
-                string[] _parts = _line.Split('|');
-                if (_parts.Length == 3)
-                {
-                    _entries.Add(new Entry(_parts[1], _parts[2], _parts[0]));
-                }
-            }
-
-            Console.WriteLine("Journal loaded successfully.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while loading: {ex.Message}");
-        }
-    }
-
-    public bool ListSavedJournals()
-    {
-        Console.WriteLine("\nSaved Journals:");
-        RefreshSavedJournals();
-        if (_savedJournals.Count == 0)
-        {
-            Console.WriteLine("No saved journals found.");
-            return false;
-        }
-
-        foreach (string _journal in _savedJournals)
-        {
-            Console.WriteLine(_journal);
-        }
-        return true;
-    }
-
-    public void RefreshSavedJournals()
-    {
-        try
-        {
-            string[] _files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.txt");
-            _savedJournals.Clear();
-            foreach (string _file in _files)
-            {
-                _savedJournals.Add(Path.GetFileName(_file));
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while refreshing saved journals: {ex.Message}");
-        }
+        return words.All(w => w.Hidden);
     }
 }
 
-class Entry
+class Reference
 {
-    public string _Prompt { get; }
-    public string _Response { get; }
-    public string _Date { get; }
-
-    public Entry(string _prompt, string _response, string _date)
+    public string Text { get; }
+    
+    public Reference(string _text)
     {
-        _Prompt = _prompt;
-        _Response = _response;
-        _Date = _date;
+        Text = _text;
+    }
+}
+
+class Word
+{
+    public string Text { get; }
+    public bool Hidden { get; private set; }
+    
+    public Word(string _text)
+    {
+        Text = _text;
+        Hidden = false;
+    }
+    
+    public void Hide()
+    {
+        Hidden = true;
     }
 }
