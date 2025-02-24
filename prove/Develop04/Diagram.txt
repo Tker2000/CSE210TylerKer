@@ -1,0 +1,150 @@
+Classes Needed:
+
+Program -> 
+The Program class acts as the entry point of the application, managing user interaction and the main execution loop.
+
+Activity (Abstract Base Class) ->
+Defines the core structure for all activities.
+Stores common attributes and provides essential methods for activity execution.
+
+BreathingActivity (Inherits from Activity) ->
+Guides the user through inhale/exhale cycles with countdowns.
+Implements the PerformActivity method with breathing instructions.
+
+ReflectionActivity (Inherits from Activity) ->
+Stores predefined reflection prompts and questions.
+Displays a random prompt and asks random reflection questions with pauses.
+Implements methods to retrieve random prompts and questions.
+
+ListingActivity (Inherits from Activity) ->
+Stores predefined listing prompts.
+Displays a random prompt and records user input until time runs out.
+Implements methods to retrieve random listing prompts.
+
+Menu ->
+Displays menu options for activity selection.
+Allows the user to select an activity.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Program
+Fields:
+Activity _activity → Stores an instance of the selected Activity class.
+
+Methods:
+Main() → The entry point of the program. It:
+    Displays the menu and allows the user to choose an activity.
+    Initializes the chosen activity.
+    Starts the activity execution loop.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Activity (Abstract Base Class)
+Fields:
+string _name → Name of the activity.
+string _description → Description of the activity.
+int _duration → Duration of the activity in seconds.
+
+Methods:
+StartActivity() → Displays start message, sets duration, and prepares user.
+EndActivity() → Displays ending message with duration.
+ShowAnimation(int seconds) → Displays an animation (spinner, countdown, etc.).
+PerformActivity() → Abstract method implemented by derived classes.
+
+---------------------------------------------------------------------------------------------------
+
+Class: BreathingActivity (Inherits from Activity)
+Methods:
+PerformActivity() → Guides the user through inhale/exhale cycles with countdowns.
+
+---------------------------------------------------------------------------------------------------
+
+Class: ReflectionActivity (Inherits from Activity)
+Fields:
+List<string> _prompts → Predefined reflection prompts.
+List<string> _questions → Predefined reflection questions.
+
+Methods:
+PerformActivity() → Shows a random prompt and asks random reflection questions with pauses.
+GetRandomPrompt() → Retrieves a random reflection prompt.
+GetRandomQuestion() → Retrieves a random reflection question.
+
+---------------------------------------------------------------------------------------------------
+
+Class: ListingActivity (Inherits from Activity)
+Fields:
+List<string> _prompts → Predefined listing prompts.
+
+Methods:
+PerformActivity() → Shows a random prompt and records user input until time runs out.
+GetRandomPrompt() → Retrieves a random listing prompt.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Menu
+Methods:
+DisplayMenu() → Shows menu options for activity selection.
+SelectActivity(int choice) → Returns the chosen activity.
+
+---------------------------------------------------------------------------------------------------
+
+Breaking down the classes and their uses:
+
++------------------+
+|     Program      |
++------------------+
+| - Activity _activity |
++------------------+
+| + Main(args)     |
++------------------+
+
+Contains ⬇
+
++------------------+
+|     Activity    |
++------------------+
+| - string _name |
+| - string _description |
+| - int _duration |
++------------------+
+| + StartActivity() |
+| + EndActivity() |
+| + ShowAnimation(seconds) |
+| + PerformActivity() (abstract) |
++------------------+
+
+Inherited by ⬇
+
++------------------+
+| BreathingActivity |
++------------------+
+| + PerformActivity() |
++------------------+
+
++------------------+
+| ReflectionActivity |
++------------------+
+| - List<string> _prompts |
+| - List<string> _questions |
++------------------+
+| + PerformActivity() |
+| + GetRandomPrompt() |
+| + GetRandomQuestion() |
++------------------+
+
++------------------+
+|  ListingActivity  |
++------------------+
+| - List<string> _prompts |
++------------------+
+| + PerformActivity() |
+| + GetRandomPrompt() |
++------------------+
+
++------------------+
+|       Menu       |
++------------------+
+| + DisplayMenu() |
+| + SelectActivity(choice) |
++------------------+
+
