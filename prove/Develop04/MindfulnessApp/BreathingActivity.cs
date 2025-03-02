@@ -1,3 +1,7 @@
+// Stretch: I added animation to the breathing activity using a sinusoidal function to expand and contract text smoothly (fast at first, then slows down).
+
+
+
 using System;
 using System.Threading;
 
