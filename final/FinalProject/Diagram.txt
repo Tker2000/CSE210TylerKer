@@ -1,0 +1,244 @@
+Classes Needed:
+
+Program -> 
+The Program class acts as the entry point of the application, managing user interaction and the main execution loop.
+
+Transaction (Abstract Base Class) ->
+Represents a generic financial transaction.
+Includes shared properties like amount, date, and description.
+
+Income (Inherits from Transaction) ->
+Represents money received.
+May include a source (e.g., Salary, Bonus).
+
+Expense (Inherits from Transaction) ->
+Represents money spent.
+Categorized by type (e.g., Food, Rent, Utilities).
+
+TransactionManager ->
+Handles the creation, storage, deletion, and filtering of transactions.
+Computes total balances.
+
+BudgetSummary ->
+Generates summaries, such as total income/expenses and category breakdowns for a given period.
+
+GoalTracker ->
+Allows users to define and monitor savings goals.
+Tracks progress toward each goal.
+
+FileManager ->
+Handles persistent data by saving and loading transaction data to and from files.
+
+UserInterface ->
+Manages all console-based user interaction, including input prompts, menus, and data display.
+
+BudgetCategory ->
+Stores budget limits for each user-defined category and compares them to actual spending.
+
+ReportGenerator ->
+Generates reports for the user, alerts for budget exceedances, and possibly exports or visual visuals.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Program
+Methods:
+Main() → The entry point of the program. It:
+    Loads data.
+    Displays menu.
+    Processes user input.
+    Delegates to appropriate classes for actions.
+    Saves data before exiting.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Transaction (Abstract Base Class)
+Fields:
+decimal Amount → Transaction amount.
+DateTime Date → Date of the transaction.
+string Description → Short note about the transaction.
+
+---------------------------------------------------------------------------------------------------
+
+Class: Income (Inherits from Transaction)
+Fields:
+string Source → Optional label for income source (e.g., Job, Bonus).
+
+---------------------------------------------------------------------------------------------------
+
+Class: Expense (Inherits from Transaction)
+Fields:
+string Category → Defines what kind of expense this is (e.g., Food, Rent).
+
+---------------------------------------------------------------------------------------------------
+
+Class: TransactionManager
+Fields:
+List<Transaction> _transactions → Stores all transactions.
+
+Methods:
+AddTransaction(Transaction t) → Adds a transaction.
+RemoveTransaction(Transaction t) → Removes a transaction.
+GetTransactionsByMonth(DateTime month) → Filters transactions by month.
+GetTotalIncome() → Returns total income.
+GetTotalExpenses() → Returns total expenses.
+GetTransactionsByCategory(string category) → Filters by category.
+
+---------------------------------------------------------------------------------------------------
+
+Class: BudgetSummary
+Methods:
+GenerateMonthlySummary(DateTime month) → Returns summary for that month.
+GenerateCategorySummary() → Returns total spending per category.
+
+---------------------------------------------------------------------------------------------------
+
+Class: GoalTracker
+Fields:
+Dictionary<string, decimal> _goals → Maps goal names to amounts.
+Dictionary<string, decimal> _progress → Tracks current savings toward each goal.
+
+Methods:
+SetGoal(string name, decimal amount) → Defines a savings goal.
+UpdateProgress(string name, decimal amount) → Adds to goal progress.
+IsGoalMet(string name) → Checks if the goal has been reached.
+
+---------------------------------------------------------------------------------------------------
+
+Class: FileManager
+Methods:
+SaveData(string filepath, List<Transaction> transactions) → Saves transaction data.
+LoadData(string filepath) → Loads transaction data.
+
+---------------------------------------------------------------------------------------------------
+
+Class: UserInterface
+Methods:
+DisplayMainMenu() → Shows main options.
+PromptTransactionEntry() → Collects user input for a new transaction.
+DisplaySummary(BudgetSummary summary) → Shows a budget summary.
+PromptCategoryBudget() → Gets input for setting a category budget.
+
+---------------------------------------------------------------------------------------------------
+
+Class: BudgetCategory
+Fields:
+Dictionary<string, decimal> _categoryLimits → Stores budget limit per category.
+Dictionary<string, decimal> _categorySpending → Tracks actual spending per category.
+
+Methods:
+SetLimit(string category, decimal amount) → Sets a budget limit.
+UpdateSpending(string category, decimal amount) → Updates spending for a category.
+IsLimitExceeded(string category) → Checks if spending exceeds the limit.
+
+---------------------------------------------------------------------------------------------------
+
+Class: ReportGenerator
+Methods:
+GenerateSpendingReport() → Returns detailed report of spending by category.
+GenerateOverspendingAlerts(BudgetCategory categoryData) → Returns alert messages if limits are exceeded.
+ExportToFile(string path) → Writes reports to a text or CSV file.
+
+---------------------------------------------------------------------------------------------------
+
+Breaking down the classes and their uses:
+
++----------------------+
+|       Program       |
++----------------------+
+|                      |
++----------------------+
+| + Main()            |
++----------------------+
+
+Contains ⬇
+
++---------------------------+
+|       Transaction        |
++---------------------------+
+| - decimal Amount          |
+| - DateTime Date           |
+| - string Description      |
++---------------------------+
+| (abstract class)          |
++---------------------------+
+
+Inherited by ⬇
+
++----------------------+
+|       Income         |
++----------------------+
+| - string Source      |
++----------------------+
+
++----------------------+
+|       Expense        |
++----------------------+
+| - string Category    |
++----------------------+
+
++------------------------------+
+|    TransactionManager        |
++------------------------------+
+| - List<Transaction> _transactions |
++------------------------------+
+| + AddTransaction(t)          |
+| + RemoveTransaction(t)       |
+| + GetTransactionsByMonth()   |
+| + GetTotalIncome()           |
+| + GetTotalExpenses()         |
+| + GetTransactionsByCategory()|
++------------------------------+
+
++----------------------+
+|    BudgetSummary     |
++----------------------+
+| + GenerateMonthlySummary()  |
+| + GenerateCategorySummary() |
++------------------------------+
+
++----------------------+
+|     GoalTracker      |
++----------------------+
+| - Dictionary<string, decimal> _goals     |
+| - Dictionary<string, decimal> _progress  |
++----------------------+
+| + SetGoal()           |
+| + UpdateProgress()    |
+| + IsGoalMet()         |
++----------------------+
+
++----------------------+
+|     FileManager      |
++----------------------+
+| + SaveData()         |
+| + LoadData()         |
++----------------------+
+
++----------------------+
+|   UserInterface      |
++----------------------+
+| + DisplayMainMenu()  |
+| + PromptTransactionEntry() |
+| + DisplaySummary()   |
+| + PromptCategoryBudget() |
++----------------------+
+
++---------------------------+
+|     BudgetCategory        |
++---------------------------+
+| - Dictionary<string, decimal> _categoryLimits   |
+| - Dictionary<string, decimal> _categorySpending |
++---------------------------+
+| + SetLimit()              |
+| + UpdateSpending()        |
+| + IsLimitExceeded()       |
++---------------------------+
+
++---------------------------+
+|     ReportGenerator       |
++---------------------------+
+| + GenerateSpendingReport()       |
+| + GenerateOverspendingAlerts()   |
+| + ExportToFile()                 |
++---------------------------+
+

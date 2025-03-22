@@ -1,0 +1,15 @@
+For my final project, I will create a Budget Manager App. This console-based application will help users track income, expenses, and categorized transactions. It will also provide summaries such as total spending per category, monthly balance, and savings goals. The purpose is to promote financial organization.
+The Budget Manager App will allow users to enter and categorize financial transactions (income or expenses), view summaries, and track savings goals. Users can define budget limits per category and receive alerts when they are close to or exceed those limits. The app will support data persistence by saving/loading transaction history.
+
+The app will include the following classes:
+•	Transaction (Base): Represents any financial transaction with fields like amount, date, and description.
+•	Income (Derived): Represents incoming funds, optionally tagged with a source (e.g., Job, Bonus).
+•	Expense (Derived): Represents spending, with an associated category (e.g., Food, Rent).
+•	TransactionManager: Manages all transactions (add, remove, filter, calculate totals).
+•	BudgetSummary: Provides monthly and category-based financial summaries.
+•	GoalTracker: Helps users set and monitor savings goals.
+•	FileManager: Handles saving/loading of data.
+•	UserInterface: Controls user interaction and navigation.
+•	BudgetCategory (New): Stores and manages user-defined category budgets (e.g., “Food: $300”). Helps compare actual vs. budgeted amounts.
+•	ReportGenerator (New): Creates printable or exportable reports, overspending alerts, and possibly visual output if extended.
+
