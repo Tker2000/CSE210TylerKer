@@ -1,0 +1,8 @@
+Milestone Assignments
+
+I am working on the Open Ended project with a Budget Manager application. 
+So far, I have implemented all of the classes in my design including 
+Transaction, Income, Expense, TransactionManager, BudgetSummary, GoalTracker, FileManager, UserInterface, BudgetCategory, and ReportGenerator. 
+Each class has the appropriate properties and methods defined. While some methods are still basic or have minimal implementation, 
+the project compiles successfully and has basic menu-driven interaction. It can read and write transactions to a file, generate monthly summaries, 
+track expenses against category budgets, and set financial goals. I am now focusing on improving UI flow and finalizing remaining functionality.
