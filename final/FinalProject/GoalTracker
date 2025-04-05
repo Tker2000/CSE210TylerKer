@@ -1,0 +1,20 @@
+// GoalTracker class
+public class GoalTracker
+{
+    private Dictionary<string, decimal> _goals = new();
+    private Dictionary<string, decimal> _progress = new();
+
+    public void SetGoal(string name, decimal amount)
+    {
+        _goals[name] = amount;
+        if (!_progress.ContainsKey(name)) _progress[name] = 0;
+    }
+
+    public void UpdateProgress(string name, decimal amount)
+    {
+        if (_progress.ContainsKey(name))
+            _progress[name] += amount;
+    }
+
+    public bool IsGoalMet(string name) => _progress.ContainsKey(name) && _progress[name] >= _goals[name];
+}

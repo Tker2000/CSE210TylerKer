@@ -1,4 +1,4 @@
-For my final project, I will create a Budget Manager App. This console-based application will help users track income, expenses, and categorized transactions. It will also provide summaries such as total spending per category, monthly balance, and savings goals. The purpose is to promote financial organization.
+For my final project, I will be doing the open-ended project. I will create a Budget Manager App. This console-based application will help users track income, expenses, and categorized transactions. It will also provide summaries such as total spending per category, monthly balance, and savings goals. The purpose is to promote financial organization.
 The Budget Manager App will allow users to enter and categorize financial transactions (income or expenses), view summaries, and track savings goals. Users can define budget limits per category and receive alerts when they are close to or exceed those limits. The app will support data persistence by saving/loading transaction history.
 
 The app will include the following classes:
